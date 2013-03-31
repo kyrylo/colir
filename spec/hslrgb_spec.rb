@@ -60,6 +60,51 @@ describe Colir::HSLRGB do
         @hsl[2].should.be kind_of(Float)
       end
     end
+
+    describe "parameters" do
+      describe "R" do
+        it "raises RangeError if it's too low" do
+          should.raise(RangeError) {
+            Colir::HSLRGB.rgb_to_hsl(-1, 0, 0)
+          }.message =~ /out of allowed RGB values \(0-255\)/
+        end
+
+        it "raises RangeError if it's too high" do
+          should.raise(RangeError) {
+            Colir::HSLRGB.rgb_to_hsl(256, 255, 255)
+          }.message =~ /out of allowed RGB values \(0-255\)/
+        end
+      end
+
+      describe "G" do
+        it "raises RangeError if it's too low" do
+          should.raise(RangeError) {
+            Colir::HSLRGB.rgb_to_hsl(0, -1, 0)
+          }.message =~ /out of allowed RGB values \(0-255\)/
+        end
+
+        it "raises RangeError if it's too high" do
+          should.raise(RangeError) {
+            Colir::HSLRGB.rgb_to_hsl(255, 256, 255)
+          }.message =~ /out of allowed RGB values \(0-255\)/
+        end
+
+      end
+
+      describe "B" do
+        it "raises RangeError if it's too low" do
+          should.raise(RangeError) {
+            Colir::HSLRGB.rgb_to_hsl(0, 0, -1)
+          }.message =~ /out of allowed RGB values \(0-255\)/
+        end
+
+        it "raises RangeError if it's too high" do
+          should.raise(RangeError) {
+            Colir::HSLRGB.rgb_to_hsl(255, 255, 256)
+          }.message =~ /out of allowed RGB values \(0-255\)/
+        end
+      end
+    end
   end
 
   describe "::hsl_to_rgb" do
@@ -103,6 +148,51 @@ describe Colir::HSLRGB do
     it "converts violetish HSL colour to its RGB equivalent" do
       # Little observational error: 0x32 should be 0x33.
       Colir::HSLRGB.hsl_to_rgb(270, 1.0, 0.6).should == [0x99, 0x32, 0xff]
+    end
+
+    describe "parameters" do
+      describe "H" do
+        it "raises RangeError if it's too low" do
+          should.raise(RangeError) {
+            Colir::HSLRGB.hsl_to_rgb(-1, 0, 0)
+          }.message =~ /out of allowed HSL values/
+        end
+
+        it "raises RangeError if it's too high" do
+          should.raise(RangeError) {
+            Colir::HSLRGB.hsl_to_rgb(361, 1, 1)
+          }.message =~ /out of allowed HSL values/
+        end
+      end
+
+      describe "G" do
+        it "raises RangeError if it's too low" do
+          should.raise(RangeError) {
+            Colir::HSLRGB.hsl_to_rgb(0, -0.1, 0)
+          }.message =~ /out of allowed HSL values/
+        end
+
+        it "raises RangeError if it's too high" do
+          should.raise(RangeError) {
+            Colir::HSLRGB.hsl_to_rgb(360, 1.1, 1)
+          }.message =~ /out of allowed HSL values/
+        end
+
+      end
+
+      describe "B" do
+        it "raises RangeError if it's too low" do
+          should.raise(RangeError) {
+            Colir::HSLRGB.hsl_to_rgb(0, 1, -0.1)
+          }.message =~ /out of allowed HSL values/
+        end
+
+        it "raises RangeError if it's too high" do
+          should.raise(RangeError) {
+            Colir::HSLRGB.hsl_to_rgb(360, 1, 1.1)
+          }.message =~ /out of allowed HSL values/
+        end
+      end
     end
   end
 end
