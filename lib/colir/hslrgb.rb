@@ -68,9 +68,14 @@ class Colir
       # @return [Boolean] true if the given +hsl+ colour lies within the
       #   `H_RANGE`, `S_RANGE`, `L_RANGE`
       def self.valid_hsl?(hsl)
-        H_RANGE.include?(hsl[0]) && S_RANGE.include?(hsl[1]) &&
-          L_RANGE.include?(hsl[2])
+        valid_hue?(hsl[0]) && S_RANGE.cover?(hsl[1]) &&
+          L_RANGE.cover?(hsl[2]) && (hsl.length == 3)
       end
+
+      def self.valid_hue?(hue)
+        H_RANGE.cover?(hue) && hue.integer?
+      end
+      private_class_method :valid_hue?
     end
 
     # The cached array of arrays, which contains order codes for the model  from
