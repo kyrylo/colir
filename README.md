@@ -1,6 +1,8 @@
 Colir
 =====
 
+[![Build Status][ci-badge]][ci-link]
+
 * Repository: [https://github.com/kyrylo/colir][cr]
 
 Description
@@ -108,3 +110,5 @@ Licence
 The project uses Zlib licence. See LICENCE file for more information.
 
 [cr]: https://github.com/kyrylo/colir
+[ci-badge]: https://travis-ci.org/kyrylo/colir.png?branch=master "Build status"
+[ci-link]: https://travis-ci.org/kyrylo/colir/ "Build history"
