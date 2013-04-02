@@ -24,7 +24,7 @@ class Colir
       # @return [Boolean] true if the given +rgb+ colour lies within the
       #   `RGB_RANGE`
       def self.valid_rgb?(rgb)
-        rgb.all? { |b| RGB_RANGE.include?(b) }
+        rgb.all? { |b| valid_byte?(b) } && (rgb.length == 3)
       end
 
       # Converts +hex+ number to the RGB array.
@@ -37,6 +37,11 @@ class Colir
       def self.int_bytes(hex)
         hex.to_s(16).rjust(6, '0').scan(/../).map { |b| b.to_i(16) }
       end
+
+      def self.valid_byte?(byte)
+        RGB_RANGE.cover?(byte) && byte.integer?
+      end
+      private_class_method :valid_byte?
     end
 
     # Provides helper methods for HSL colours.
@@ -63,9 +68,14 @@ class Colir
       # @return [Boolean] true if the given +hsl+ colour lies within the
       #   `H_RANGE`, `S_RANGE`, `L_RANGE`
       def self.valid_hsl?(hsl)
-        H_RANGE.include?(hsl[0]) && S_RANGE.include?(hsl[1]) &&
-          L_RANGE.include?(hsl[2])
+        valid_hue?(hsl[0]) && S_RANGE.cover?(hsl[1]) &&
+          L_RANGE.cover?(hsl[2]) && (hsl.length == 3)
       end
+
+      def self.valid_hue?(hue)
+        H_RANGE.cover?(hue) && hue.integer?
+      end
+      private_class_method :valid_hue?
     end
 
     # The cached array of arrays, which contains order codes for the model  from
