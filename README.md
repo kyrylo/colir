@@ -107,4 +107,4 @@ Licence
 
 The project uses Zlib licence. See LICENCE file for more information.
 
-[cs]: https://github.com/kyrylo/colir
+[cr]: https://github.com/kyrylo/colir
