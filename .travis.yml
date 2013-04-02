@@ -1,0 +1,16 @@
+language: ruby
+
+rvm:
+  - ruby-head
+  - 2.0.0
+  - 1.9.3
+  - rbx-19mode
+  - jruby-head
+  - jruby-19mode
+
+branches:
+  only:
+    - master
+
+before_install:
+  - gem install bundler
