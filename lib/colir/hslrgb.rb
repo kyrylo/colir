@@ -26,6 +26,17 @@ class Colir
       def self.valid_rgb?(rgb)
         rgb.all? { |b| RGB_RANGE.include?(b) }
       end
+
+      # Converts +hex+ number to the RGB array.
+      #
+      # @example
+      #   RGB.int_bytes('123456') #=> [18, 52, 86]
+      #
+      # @param [String] hex The hex number expressed without the preceding `0x`
+      # @return [Array<Integer>] the RGB array
+      def self.int_bytes(hex)
+        hex.to_s(16).rjust(6, '0').scan(/../).map { |b| b.to_i(16) }
+      end
     end
 
     # Provides helper methods for HSL colours.
@@ -92,10 +103,10 @@ class Colir
     def self.rgb_to_hsl(red, green, blue)
       validate_rgb!([red, green, blue])
 
-      red, green, blue = [red, green, blue].map { |b| b / 255.0 }
+      red, green, blue = [red, green, blue].map { |b| (b / 255.0) }
       min, max = [red, green, blue].minmax
       chroma = max - min
-      lightness = (0.5 * (min + max)).round(2)
+      lightness = 0.5 * (min + max)
 
       hue = saturation = 0
 
@@ -110,7 +121,7 @@ class Colir
         saturation = ((chroma) / (1.0 - (2 * lightness - 1).abs)).round(2)
       end
 
-      [hue, saturation, lightness]
+      [hue, saturation, lightness.round(2)]
     end
 
     def self.validate_rgb!(rgb)
