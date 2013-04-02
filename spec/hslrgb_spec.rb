@@ -165,7 +165,7 @@ describe Colir::HSLRGB do
         end
       end
 
-      describe "G" do
+      describe "S" do
         it "raises RangeError if it's too low" do
           should.raise(RangeError) {
             Colir::HSLRGB.hsl_to_rgb(0, -0.1, 0)
@@ -180,7 +180,7 @@ describe Colir::HSLRGB do
 
       end
 
-      describe "B" do
+      describe "L" do
         it "raises RangeError if it's too low" do
           should.raise(RangeError) {
             Colir::HSLRGB.hsl_to_rgb(0, 1, -0.1)
