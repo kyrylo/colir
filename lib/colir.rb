@@ -200,7 +200,7 @@ class Colir
   #   of [0, 1].
   # @raise [RangeError] if the tranparency is a bad value
   def initialize(hex, transparency = TRANSPARENCY)
-    unless (0..1).include?(transparency)
+    unless (0..1).cover?(transparency)
       raise RangeError, 'out of allowed transparency values (0-1)'
     end
     @hex = hex
