@@ -23,7 +23,7 @@ talk about the API instead.
 You can create colours with human readable names. For example, the following
 code would create opaque red colour (0xff000000).
 
-```
+```ruby
 require 'colir'
 
 red = Colir.red #=> (Colir: 0xff000000)
@@ -32,13 +32,13 @@ red.hex #=> "0xff000000"
 
 You can also create arbitrary HEX colours.
 
-```
+```ruby
 red = Colir.new(0xff0000)
 ```
 
 As you may have noticed, the library supports transparent colours.
 
-```
+```ruby
 red = Colir.red(0.3) #=> (Colir: 0xff00001e)
 red.hex #=> "0xff00001e"
 red.transparency #=> 0.3
@@ -50,7 +50,7 @@ green.transparency #=> 0.3
 
 It's possible to make the colour more or less transparent.
 
-```
+```ruby
 # Transparency.
 green = Colir.new(0x00ff00, 0.3)
 green.transparency #=> 0.3
@@ -66,7 +66,7 @@ red.transparency #=> 1.0
 
 Last but not least, you can use shades.
 
-```
+```ruby
 red = Colir.red
 red.shade #=> 0
 red.darker #=> 
