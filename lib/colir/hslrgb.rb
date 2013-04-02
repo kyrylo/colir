@@ -20,7 +20,7 @@ class Colir
       # @example Falsey
       #   RGB.valid_rgb?([256, 13, -1]) #=> false
       #
-      # @param [Array] rgb The RGB colour to be checked
+      # @param [Array<Integer>] rgb The RGB colour to be checked
       # @return [Boolean] true if the given +rgb+ colour lies within the
       #   `RGB_RANGE`
       def self.valid_rgb?(rgb)
@@ -51,17 +51,17 @@ class Colir
       # The possible values for the lightness.
       L_RANGE = S_RANGE
 
-      # Performs a validation check for the +rgb+.
+      # Performs a validation check for the +hsl+.
       #
       # @example Truthy
-      #   RGB.valid_rgb?([255, 13, 0]) #=> true
+      #   RGB.valid_hsl?([180, 1, 0.55]) #=> true
       #
       # @example Falsey
-      #   RGB.valid_rgb?([256, 13, -1]) #=> false
+      #   RGB.valid_hsl?([180, 1.1, 0.55]) #=> false
       #
-      # @param [Array] rgb The RGB colour to be checked
-      # @return [Boolean] true if the given +rgb+ colour lies within the
-      #   `RGB_RANGE`
+      # @param [Array<Number>] hsl The HSL colour to be checked
+      # @return [Boolean] true if the given +hsl+ colour lies within the
+      #   `H_RANGE`, `S_RANGE`, `L_RANGE`
       def self.valid_hsl?(hsl)
         H_RANGE.include?(hsl[0]) && S_RANGE.include?(hsl[1]) &&
           L_RANGE.include?(hsl[2])
