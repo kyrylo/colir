@@ -80,9 +80,9 @@ red.darken
 red.shade #=> -1
 red.darken
 red.shade #=> -2
-red.lighter
-red.lighter
-red.lighter
+red.lighten
+red.lighten
+red.lighten
 red.shade #=> 1
 ```
 
