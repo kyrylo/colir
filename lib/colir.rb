@@ -282,6 +282,13 @@ class Colir
     self
   end
 
+  # Resets the `@shade` to the default value, restoring the `@hex` number.
+  # @return [self]
+  def reset_shade
+    @shade.abs.times { @ld_seq.last == :ltn ? darken : lighten }
+    self
+  end
+
   private
 
   def l_factor

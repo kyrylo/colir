@@ -91,10 +91,27 @@ describe Colir do
     end
   end
 
-  #describe "#reset_shade" do
-    #it "resets the colour to its initial state" do
-    #end
-  #end
+  describe "#reset_shade" do
+    before do
+      @colir = Colir.new(0x123456)
+    end
+
+    it "resets the colour to its initial state" do
+      before = @colir.shade
+      3.times { @colir.darken }
+      @colir.shade.should.not == before
+      @colir.reset_shade
+      @colir.shade.should == before
+    end
+
+    it "restores the hex number" do
+      before = @colir.hex
+      3.times { @colir.darken }
+      @colir.hex.should.not == before
+      @colir.reset_shade
+      @colir.hex.should == before
+    end
+  end
 
   #describe "#darker" do
     #it "doesn't modify the base colour" do
