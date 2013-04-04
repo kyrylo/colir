@@ -285,11 +285,14 @@ class Colir
   end
 
   # @yield [hsl]
-  # @yieldparam [Array<Integer>] an HSL colour based on the current HEX
-  # @yieldreturn [Array<Integer>] an HSL colour with corrected lightness
+  # @yieldparam [Array<Integer,BigDecimal>] an HSL colour based on the
+  #   current HEX
+  # @yieldreturn [Array<Integer,BigDecimal>] an HSL colour with
+  #   corrected lightness
   # @return [void]
   def calculate_new_hex
     @hsl ||= HSLRGB.rgb_to_hsl(*HSLRGB::RGB.int_bytes(@hex))
+    binding.pry
     @hex = HSLRGB.hsl_to_rgb(*yield(@hsl)).map do |b|
       b.to_s(16).rjust(2, '0')
     end.join('').to_i(16)
