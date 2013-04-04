@@ -130,7 +130,7 @@ class Colir
               else            (red - green) / chroma + 4
               end
         hue = (hue * 60).round
-        saturation = chroma / (BigDecimal('1.0') - (2 * lightness - 1).abs)
+        saturation = chroma / (1 - (2 * lightness - 1).abs)
       end
 
       [hue, saturation, lightness]
@@ -166,9 +166,9 @@ class Colir
     def self.hsl_to_rgb(hue, saturation, lightness)
       validate_hsl!([hue, saturation, lightness])
 
-      chroma = (BigDecimal('1.0') - (2 * lightness - 1.0).abs) * saturation
-      a = BigDecimal('1.0') * (lightness - BigDecimal('0.5') * chroma)
-      b = chroma * (BigDecimal('1.0') - ((hue / BigDecimal('60.0')).modulo(2) - BigDecimal('1.0')).abs)
+      chroma = (1 - (2 * lightness - 1).abs) * saturation
+      a = 1 * (lightness - 0.5 * chroma)
+      b = chroma * (1 - ((hue / BigDecimal('60.0')).modulo(2) - 1).abs)
 
       degrees = Array.new(7) { |idx| idx * 60 }.each
       model = [chroma+a, a+b, a]
