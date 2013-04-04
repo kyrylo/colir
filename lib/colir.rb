@@ -179,10 +179,16 @@ class Colir
     end
   end
 
+  # The possible number of shades of a Colir in each direction.
   SHADE_FACTOR = 5
+
+  # The default transparency (opaque).
   TRANSPARENCY = BigDecimal('0.0')
+
+  # The default shade assigned to any Colir.
   SHADE = 0
 
+  # @see HSLRGB::HSL::L_RANGE
   UPPER_LIMIT = BigDecimal(HSLRGB::HSL::L_RANGE.max.to_f.to_s)
 
   # @return [Integer] the HEX colour without the alpha channel
