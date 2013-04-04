@@ -116,7 +116,7 @@ class Colir
     def self.rgb_to_hsl(red, green, blue)
       validate_rgb!([red, green, blue])
 
-      red, green, blue = [red, green, blue].map { |b| (BigDecimal(b.to_s) / 255) }
+      red, green, blue = [red, green, blue].map { |b| b / BigDecimal('255.0') }
       min, max = [red, green, blue].minmax
       chroma = max - min
       lightness = (min + max) * 0.5
