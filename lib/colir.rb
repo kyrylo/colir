@@ -213,7 +213,9 @@ class Colir
 
   # @return [Integer] the HEXA representation of the Colir
   def hexa
-    (@hex.to_s(16).rjust(6, '0') + (transparency * 100).to_i.to_s(16).rjust(2, '0')).to_i(16)
+    hex = @hex.to_s(16).rjust(6, '0')
+    alpha = (transparency * 100).to_i.to_s(16).rjust(2, '0')
+    (hex + alpha).to_i(16)
   end
 
   # Make the colour fully transparent.
@@ -292,7 +294,6 @@ class Colir
   # @return [void]
   def calculate_new_hex
     @hsl ||= HSLRGB.rgb_to_hsl(*HSLRGB::RGB.int_bytes(@hex))
-    binding.pry
     @hex = HSLRGB.hsl_to_rgb(*yield(@hsl)).map do |b|
       b.to_s(16).rjust(2, '0')
     end.join('').to_i(16)
