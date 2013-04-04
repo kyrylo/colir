@@ -1,3 +1,5 @@
+require 'bigdecimal'
+
 class Colir
   # The module provides methods for RGB to HSL and HSL to RGB conversions. I
   # just ported it from a C implementation.
@@ -30,6 +32,7 @@ class Colir
       # Converts +hex+ number to the RGB array.
       #
       # @example
+      #   # TODO: accepts Integer, not String
       #   RGB.int_bytes('123456') #=> [18, 52, 86]
       #
       # @param [String] hex The hex number expressed without the preceding `0x`
@@ -104,8 +107,8 @@ class Colir
     # @param [Integer] red Possible values: 0..255
     # @param [Integer] green Possible values: 0..255
     # @param [Integer] blue Possible values: 0..255
-    # @return [Array<Integer,Float>] the converted HSL representation of an RGB
-    #   colour
+    # @return [Array<Integer,BigDecimal>] the converted HSL representation of
+    #   an RGB colour
     # @raise [RangeError] if one of the parameters doesn't lie within the
     #   accepted range
     # @see http://en.wikipedia.org/wiki/HSL_color_space HSL color space
@@ -113,25 +116,25 @@ class Colir
     def self.rgb_to_hsl(red, green, blue)
       validate_rgb!([red, green, blue])
 
-      red, green, blue = [red, green, blue].map { |b| (b / 255.0) }
+      red, green, blue = [red, green, blue].map { |b| (BigDecimal(b.to_s) / 255) }
       min, max = [red, green, blue].minmax
       chroma = max - min
-      lightness = 0.5 * (min + max)
+      lightness = (min + max) * 0.5
 
-      hue = saturation = 0
+      hue = 0
+      saturation = BigDecimal('0.0')
 
       if chroma.nonzero?
         hue = case max
-              when red   then ((green - blue) / chroma) % 6
+              when red   then (green - blue) / chroma % 6
               when green then (blue - red) / chroma + 2
               else            (red - green) / chroma + 4
               end
-
-        hue = Integer(hue / 60 * 3600)
-        saturation = ((chroma) / (1.0 - (2 * lightness - 1).abs)).round(2)
+        hue = (hue * 60).round
+        saturation = chroma / (BigDecimal('1.0') - (2 * lightness - 1).abs)
       end
 
-      [hue, saturation, lightness.round(2)]
+      [hue, saturation, lightness]
     end
 
     def self.validate_rgb!(rgb)
@@ -164,9 +167,9 @@ class Colir
     def self.hsl_to_rgb(hue, saturation, lightness)
       validate_hsl!([hue, saturation, lightness])
 
-      chroma = (1.0 - (2 * lightness - 1.0).abs) * saturation
-      a = 1.0 * (lightness - 0.5 * chroma)
-      b = chroma * (1.0 - ((hue / 60.0).modulo(2) - 1.0).abs)
+      chroma = (BigDecimal('1.0') - (2 * lightness - 1.0).abs) * saturation
+      a = BigDecimal('1.0') * (lightness - BigDecimal('0.5') * chroma)
+      b = chroma * (BigDecimal('1.0') - ((hue / BigDecimal('60.0')).modulo(2) - BigDecimal('1.0')).abs)
 
       degrees = Array.new(7) { |idx| idx * 60 }.each
       model = [chroma+a, a+b, a]
@@ -174,7 +177,7 @@ class Colir
       RGB_ORDER_CODES.find(->{RGB_DEFAULT_CODE}) {
         (degrees.next...degrees.peek) === hue
       }.map { |id|
-        (model[id] * 255).to_i
+        (model[id] * 255).round
       }
     end
 

@@ -1,3 +1,5 @@
+require 'bigdecimal'
+
 require_relative 'colir/hslrgb'
 
 # Blah
@@ -178,10 +180,10 @@ class Colir
   end
 
   SHADE_FACTOR = 5
-  TRANSPARENCY = 0.0
+  TRANSPARENCY = BigDecimal('0.0')
   SHADE = 0
 
-  UPPER_LIMIT = HSLRGB::HSL::L_RANGE.max
+  UPPER_LIMIT = BigDecimal(HSLRGB::HSL::L_RANGE.max.to_f.to_s)
 
   # @return [Integer] the HEX colour without the alpha channel
   attr_reader :hex
@@ -238,10 +240,10 @@ class Colir
       calculate_new_hex { |hsl|
         hsl[2] += if @ld_seq.last == :base || @ld_seq.last == :ltn
                     @ld_seq << :ltn
-                    l_factor(hsl)
+                    l_factor
                   else
                     @ld_seq.pop
-                    d_factor(hsl)
+                    d_factor
                   end
         @shade += 1
         hsl
@@ -260,13 +262,11 @@ class Colir
       calculate_new_hex { |hsl|
         hsl[2] -= if @ld_seq.last == :base || @ld_seq.last == :dkn
                     @ld_seq << :dkn
-                    d_factor(hsl)
+                    d_factor
                   else
                     @ld_seq.pop
-                    l_factor(hsl)
+                    l_factor
                   end
-
-        @ld_delta = -1
         @shade -= 1
         hsl
       }
@@ -276,14 +276,12 @@ class Colir
 
   private
 
-  def l_factor(hsl = nil)
-    @l_factor ||= ((UPPER_LIMIT - hsl[2]) / SHADE_FACTOR).round(2) if hsl
-    @l_factor
+  def l_factor
+    @l_factor ||= (UPPER_LIMIT - @hsl[2]) / SHADE_FACTOR
   end
 
-  def d_factor(hsl = nil)
-    @d_factor ||= (hsl[2] / SHADE_FACTOR).round(2) if hsl
-    @d_factor
+  def d_factor
+    @d_factor ||= @hsl[2] / SHADE_FACTOR
   end
 
   # @yield [hsl]
@@ -291,8 +289,8 @@ class Colir
   # @yieldreturn [Array<Integer>] an HSL colour with corrected lightness
   # @return [void]
   def calculate_new_hex
-    hsl = HSLRGB.rgb_to_hsl(*HSLRGB::RGB.int_bytes(@hex))
-    @hex = HSLRGB.hsl_to_rgb(*yield(hsl)).map do |b|
+    @hsl ||= HSLRGB.rgb_to_hsl(*HSLRGB::RGB.int_bytes(@hex))
+    @hex = HSLRGB.hsl_to_rgb(*yield(@hsl)).map do |b|
       b.to_s(16).rjust(2, '0')
     end.join('').to_i(16)
   end

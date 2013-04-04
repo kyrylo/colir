@@ -16,11 +16,17 @@ describe Colir::HSLRGB do
     end
 
     it "converts orangish RGB colour to its HSL equivalent" do
-      Colir::HSLRGB.rgb_to_hsl(0xff, 0xa3, 0x19).should == [36, 1.0, 0.55]
+      hsl = Colir::HSLRGB.rgb_to_hsl(0xff, 0xa3, 0x19)
+      hsl[0].should == 36
+      hsl[1].should == 1.0
+      hsl[2].round(2).should == 0.55
     end
 
     it "converts yellowish RGB colour to its HSL equivalent" do
-      Colir::HSLRGB.rgb_to_hsl(0xff, 0xff, 0x19).should == [60, 1.0, 0.55]
+      hsl = Colir::HSLRGB.rgb_to_hsl(0xff, 0xff, 0x19)
+      hsl[0].should == 60
+      hsl[1].should == 1.0
+      hsl[2].round(2).should == 0.55
     end
 
     it "converts greenish RGB colour to its HSL equivalent" do
@@ -28,7 +34,10 @@ describe Colir::HSLRGB do
     end
 
     it "converts bluish RGB colour to its HSL equivalent" do
-      Colir::HSLRGB.rgb_to_hsl(0x19, 0xff, 0xff).should == [180, 1.0, 0.55]
+      hsl = Colir::HSLRGB.rgb_to_hsl(0x19, 0xff, 0xff)
+      hsl[0].should == 180
+      hsl[1].should == 1.0
+      hsl[2].round(2) == 0.55
     end
 
     it "converts indigish RGB colour to its HSL equivalent" do
@@ -52,12 +61,12 @@ describe Colir::HSLRGB do
         @hsl[0].should.be kind_of(Integer)
       end
 
-      it "returns a float saturation" do
-        @hsl[1].should.be kind_of(Float)
+      it "returns a BigDecimal saturation" do
+        @hsl[1].should.be kind_of(BigDecimal)
       end
 
-      it "returns a float lightness" do
-        @hsl[2].should.be kind_of(Float)
+      it "returns a BigDecimal lightness" do
+        @hsl[2].should.be kind_of(BigDecimal)
       end
     end
 
@@ -125,11 +134,11 @@ describe Colir::HSLRGB do
     end
 
     it "converts orangish HSL colour to its RGB equivalent" do
-      Colir::HSLRGB.hsl_to_rgb(36, 1.0, 0.55).should == [0xff, 0xa3, 0x19]
+      Colir::HSLRGB.hsl_to_rgb(36, 1.0, 0.55).should == [0xff, 0xa3, 0x1a]
     end
 
     it "converts yellowish HSL colour to its RGB equivalent" do
-      Colir::HSLRGB.hsl_to_rgb(60, 1.0, 0.55).should == [0xff, 0xff, 0x19]
+      Colir::HSLRGB.hsl_to_rgb(60, 1.0, 0.55).should == [0xff, 0xff, 0x1a]
     end
 
     it "converts greenish HSL colour to its RGB equivalent" do
@@ -137,17 +146,15 @@ describe Colir::HSLRGB do
     end
 
     it "converts bluish HSL colour to its RGB equivalent" do
-      Colir::HSLRGB.hsl_to_rgb(180, 1.0, 0.55).should == [0x19, 0xff, 0xff]
+      Colir::HSLRGB.hsl_to_rgb(180, 1.0, 0.55).should == [0x1a, 0xff, 0xff]
     end
 
     it "converts indigish HSL colour to its RGB equivalent" do
-      # Little observational error: 0x65 should be 0x66.
-      Colir::HSLRGB.hsl_to_rgb(216, 1.0, 0.5).should == [0x00, 0x65, 0xff]
+      Colir::HSLRGB.hsl_to_rgb(216, 1.0, 0.5).should == [0x00, 0x66, 0xff]
     end
 
     it "converts violetish HSL colour to its RGB equivalent" do
-      # Little observational error: 0x32 should be 0x33.
-      Colir::HSLRGB.hsl_to_rgb(270, 1.0, 0.6).should == [0x99, 0x32, 0xff]
+      Colir::HSLRGB.hsl_to_rgb(270, 1.0, 0.6).should == [0x99, 0x33, 0xff]
     end
 
     describe "parameters" do

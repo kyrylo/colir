@@ -125,12 +125,12 @@ describe Colir do
 
     it "makes the current colour darker" do
       @colir.darken
-      @colir.hex.should == 0x0e2843
+      @colir.hex.should == 0x0e2a45
     end
 
     it "makes the current colour even more dark" do
       3.times { @colir.darken }
-      @colir.hex.should == 0x061422
+      @colir.hex.should == 0x071522
     end
 
     describe "lower limit" do
@@ -162,12 +162,12 @@ describe Colir do
 
     it "makes the current colour lighter" do
       @colir.lighten
-      @colir.hex.should == 0x205b97
+      @colir.hex.should == 0x205d99
     end
 
     it "makes the current colour even more light" do
       3.times { @colir.lighten }
-      @colir.hex.should == 0x78ade2
+      @colir.hex.should == 0x79aee3
     end
 
     describe "upper limit" do
@@ -186,21 +186,140 @@ describe Colir do
     end
   end
 
-  #describe "shading" do
-    #it "can be properly configured step by step" do
-      #base_color = 0x123456
-      #colir = Colir.new(base_color)
-      #colir.darken
-      #colir.darken
-      #colir.lighten
-      #colir.lighten
-      #colir.lighten
-      #colir.lighten
-      #colir.darken
-      #colir.darken
-      #colir.lighten
-      #colir.darken
-      #colir.hex.should == base_color
-    #end
-  #end
+  describe "shading" do
+    before do
+      @colir = Colir.new(0x123456)
+    end
+
+    it "darkens properly" do
+      @colir.darken.hex.should == 0x0e2a45
+      @colir.darken.hex.should == 0x0b1f34
+      @colir.darken.hex.should == 0x071522
+      @colir.darken.hex.should == 0x040a11
+      @colir.darken.hex.should == 0
+    end
+
+    it "lightens properly" do
+      @colir.lighten.hex.should == 0x205d99
+      @colir.lighten.hex.should == 0x3685d5
+      @colir.lighten.hex.should == 0x79aee3
+      @colir.lighten.hex.should == 0xbcd6f1
+      @colir.lighten.hex.should == 0xffffff
+    end
+
+    it "darkens and lightens properly" do
+      before = @colir.hex
+      2.times { @colir.lighten }
+      5.times { @colir.darken }
+      10.times { @colir.lighten }
+      5.times { @colir.darken }
+      after = @colir.hex
+      before.should == after
+    end
+
+    describe "lower limit - 0x000000" do
+      describe "darkening" do
+        before do
+          @colir = Colir.new(0x000000)
+        end
+
+        it "doesn't change the hex value" do
+          before = @colir.hex
+          after = @colir.darken.hex
+          after.should == before
+        end
+
+        it "does change the shade level" do
+          @colir.darken.shade.should == -1
+        end
+
+        it "doesn't overflow the shade level" do
+          6.times { @colir.darken }
+          @colir.shade.should == -5
+        end
+      end
+
+      describe "lightening" do
+        before do
+          @colir = Colir.new(0x000000)
+        end
+
+        it "does change the hex value" do
+          before = @colir.hex
+          after = @colir.lighten.hex
+          after.should.not == before
+        end
+
+        it "does change the shade level" do
+          @colir.lighten.shade.should == 1
+        end
+
+        it "doesn't overflow the shade level" do
+          6.times { @colir.lighten }
+          @colir.shade.should == 5
+        end
+      end
+    end
+
+    describe "very close to lower limit" do
+      describe "darkening" do
+        before do
+          @colir = Colir.new(0x000001)
+        end
+
+        it "does change the hex value when it's time" do
+          before = @colir.hex
+          3.times { @colir.darken }
+          after = @colir.hex
+          after.should.not == before
+        end
+
+        it "stops darkening when reaches the lower limit" do
+          3.times { @colir.darken }
+          before = @colir.hex
+          after = @colir.darken.hex
+          after.should == before
+        end
+
+        it "keeps changing the shade level" do
+          2.times { @colir.darken }
+          @colir.shade.should == -2
+
+          2.times { @colir.darken }
+          @colir.shade.should == -4
+        end
+      end
+    end
+
+    describe "very close to upper limit" do
+      describe "lightening" do
+        before do
+          @colir = Colir.new(0xfffffe)
+        end
+
+        it "does change the hex value when it's time" do
+          before = @colir.hex
+          3.times { @colir.lighten }
+          after = @colir.hex
+          after.should.not == before
+        end
+
+        it "stops lightening when reaches the upper limit" do
+          3.times { @colir.lighten }
+          before = @colir.hex
+          after = @colir.lighten.hex
+          after.should == before
+        end
+
+        it "keeps changing the shade level" do
+          2.times { @colir.lighten }
+          @colir.shade.should == 2
+
+          2.times { @colir.lighten }
+          @colir.shade.should == 4
+        end
+      end
+    end
+
+  end
 end
