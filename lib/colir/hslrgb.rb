@@ -32,8 +32,7 @@ class Colir
       # Converts +hex+ number to the RGB array.
       #
       # @example
-      #   # TODO: accepts Integer, not String
-      #   RGB.int_bytes('123456') #=> [18, 52, 86]
+      #   RGB.int_bytes(0x123456) #=> [18, 52, 86]
       #
       # @param [String] hex The hex number expressed without the preceding `0x`
       # @return [Array<Integer>] the RGB array
@@ -155,11 +154,11 @@ class Colir
     # but sometimes you'll notice little laxity (because of rounding problems).
     #
     # @example
-    #   HSLRGB.hsl_to_rgb(180, 1, 0.55) #=> [25, 255, 255]
+    #   HSLRGB.hsl_to_rgb(180, 1, 0.55) #=> [26, 255, 255]
     #
     # @param [Integer] hue Possible values: 0..360
-    # @param [Float] saturation Possible values: 0..1
-    # @param [Float] lightness Possible values: 0..1
+    # @param [BigDecimal] saturation Possible values: 0..1
+    # @param [BigDecimal] lightness Possible values: 0..1
     # @return [Array<Integer>] the converted RGB representation of a HSL colour
     # @raise [RangeError] if one of the parameters doesn't lie within the
     #   accepted range
