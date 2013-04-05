@@ -2,7 +2,8 @@ require 'bigdecimal'
 
 require_relative 'colir/hslrgb'
 
-# Blah
+# This tiny library provides support for RGB colours and some simple
+# manipulations with them. See README.md for more information.
 class Colir
 
   # The VERSION file must be in the root directory of the library.
@@ -316,10 +317,12 @@ class Colir
 
   private
 
+  # @return [BigDecimal] the lightening factor
   def l_factor
     @l_factor ||= (UPPER_LIMIT - @hsl[2]) / SHADE_FACTOR
   end
 
+  # @return [BigDecimal] the darkening factor
   def d_factor
     @d_factor ||= @hsl[2] / SHADE_FACTOR
   end
