@@ -211,7 +211,7 @@ class Colir
   # @param [Integer] hex It's convenient to use Ruby's HEX notation: `0xaaff33`
   # @param [Float] transparency Alpha channel. Must lie within the range
   #   of [0, 1].
-  # @raise [RangeError] if the tranparency is a bad value
+  # @raise [RangeError] if the transparency is a bad value
   def initialize(hex, transparency = TRANSPARENCY)
     validate_colir!(hex, transparency)
 
@@ -233,6 +233,15 @@ class Colir
   def transparent!
     @transparency = 1.0
     self
+  end
+
+  # Sets the new +transparency+.
+  #
+  # @return [Float] the new transparency
+  # @raise [RangeError] if transparency does not lie within the valid range
+  def transparency=(transparency)
+    validate_transparency!(transparency)
+    @transparency = transparency
   end
 
   # Make the colour fully opaque.
@@ -333,6 +342,10 @@ class Colir
       raise RangeError, 'out of allowed RGB values (0x000000-0xffffff)'
     end
 
+    validate_transparency!(transparency)
+  end
+
+  def validate_transparency!(transparency)
     unless (0..1).cover?(transparency)
       raise RangeError, 'out of allowed transparency values (0-1)'
     end

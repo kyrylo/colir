@@ -50,8 +50,12 @@ describe Colir do
   end
 
   describe "#transparency" do
+    before do
+      @colir = Colir.new(0x123456)
+    end
+
     it "defaults to no transparency" do
-      Colir.new(0x123456).transparency.should == 0.0
+      @colir.transparency.should == 0.0
     end
 
     it "can be set to a specific value" do
@@ -71,7 +75,24 @@ describe Colir do
     end
 
     it "returns a Float value" do
-      Colir.new(0x123456).transparency.should.be kind_of(Float)
+      @colir.transparency.should.be kind_of(Float)
+    end
+  end
+
+  describe "#transparency=" do
+    before do
+      @colir = Colir.new(0x123456)
+    end
+
+    it "can be set" do
+      @colir.transparency = 0.89
+      @colir.transparency.should == 0.89
+    end
+
+    it "raises error on a bad value" do
+      should.raise(RangeError) {
+        @colir.transparency = 1.01
+      }.message.should =~ /out of allowed transparency values/
     end
   end
 
