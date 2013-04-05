@@ -165,7 +165,7 @@ Colir is a cross-platform library.
 * Ruby 1.9.3 and higher
 * Rubinius 2.0.0rc1 and higher (mode 1.9 and higher)
 
-Initially I wanted to supprot JRuby 1.7.3 (mode 1.9), but it has a [critical bug
+Initially I wanted to support JRuby 1.7.3 (mode 1.9), but it has a [critical bug
 in `BigDecimal` library](http://jira.codehaus.org/browse/JRUBY-7101), which
 Colir actively utilises.
 
