@@ -12,7 +12,10 @@ class Colir
     module RGB
 
       # The possible values of an RGB colour.
-      RGB_RANGE = 0..255
+      RGB_RANGE = 0x000000..0xffffff
+
+      # The possible values of an RGB byte.
+      RGB_BYTE_RANGE = 0x00..0xff
 
       # Performs a validation check for the +rgb+.
       #
@@ -24,7 +27,7 @@ class Colir
       #
       # @param [Array<Integer>] rgb The RGB colour to be checked
       # @return [Boolean] true if the given +rgb+ colour lies within the
-      #   `RGB_RANGE`
+      #   `RGB_BYTE_RANGE`
       def self.valid_rgb?(rgb)
         rgb.all? { |b| valid_byte?(b) } && (rgb.length == 3)
       end
@@ -41,7 +44,7 @@ class Colir
       end
 
       def self.valid_byte?(byte)
-        RGB_RANGE.cover?(byte) && byte.integer?
+        RGB_BYTE_RANGE.cover?(byte) && byte.integer?
       end
       private_class_method :valid_byte?
     end
@@ -138,7 +141,7 @@ class Colir
 
     def self.validate_rgb!(rgb)
       unless RGB.valid_rgb?(rgb)
-        raise RangeError, 'out of allowed RGB values (0-255)'
+        raise RangeError, 'out of allowed RGB byte values (0-255)'
       end
     end
     private_class_method :validate_rgb!

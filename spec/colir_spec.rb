@@ -23,6 +23,18 @@ describe Colir do
     it "accepts transparency parameter" do
       Colir.new(0x012345, 0.77).transparency.should == 0.77
     end
+
+    it "doesn't allow too low HEX number" do
+      should.raise(RangeError) {
+        Colir.new(-0x000001)
+      }.message.should =~ /out of allowed RGB values/
+    end
+
+    it "doesn't allow too high HEX number" do
+      should.raise(RangeError) {
+        Colir.new(0x1000000)
+      }.message.should =~ /out of allowed RGB values/
+    end
   end
 
   describe "#hex" do

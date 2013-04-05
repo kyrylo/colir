@@ -191,6 +191,11 @@ class Colir
   # @see HSLRGB::HSL::L_RANGE
   UPPER_LIMIT = BigDecimal(HSLRGB::HSL::L_RANGE.max.to_f.to_s)
 
+  # The mi
+  RGB_LOWER_LIMIT = 0x000000
+
+  RGB_UPPER_LIMIT = 0xffffff
+
   # @return [Integer] the HEX colour without the alpha channel
   attr_reader :hex
 
@@ -208,9 +213,8 @@ class Colir
   #   of [0, 1].
   # @raise [RangeError] if the tranparency is a bad value
   def initialize(hex, transparency = TRANSPARENCY)
-    unless (0..1).cover?(transparency)
-      raise RangeError, 'out of allowed transparency values (0-1)'
-    end
+    validate_colir!(hex, transparency)
+
     @hex = hex
     @transparency = transparency
     @shade = SHADE
@@ -322,6 +326,16 @@ class Colir
     @hex = HSLRGB.hsl_to_rgb(*yield(@hsl)).map do |b|
       b.to_s(16).rjust(2, '0')
     end.join('').to_i(16)
+  end
+
+  def validate_colir!(hex, transparency)
+    unless HSLRGB::RGB::RGB_RANGE.cover?(hex)
+      raise RangeError, 'out of allowed RGB values (0x000000-0xffffff)'
+    end
+
+    unless (0..1).cover?(transparency)
+      raise RangeError, 'out of allowed transparency values (0-1)'
+    end
   end
 
 end
