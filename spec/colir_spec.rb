@@ -139,13 +139,27 @@ describe Colir do
     end
   end
 
-  #describe "#lighter" do
-    #it "doesn't modify the base colour" do
-    #end
+  describe "#lighter" do
+    before do
+      @colir = Colir.new(0x123456)
+    end
 
-    #it "returns a new colour, but a little bit lighter" do
-    #end
-  #end
+    it "returns a new object" do
+      before_id = @colir.object_id
+      after_id = @colir.lighter.object_id
+      after_id.should.not == before_id
+    end
+
+    it "doesn't modify the base colour" do
+      before = @colir.hex
+      @colir.lighter
+      @colir.hex.should == before
+    end
+
+    it "returns a new colour, but a little bit darker" do
+      @colir.lighter.shade.should == 1
+    end
+  end
 
   describe "#darken" do
     before do

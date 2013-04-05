@@ -293,6 +293,10 @@ class Colir
     self.class.new(@hex, @transparency).darken
   end
 
+  def lighter
+    self.class.new(@hex, @transparency).lighten
+  end
+
   private
 
   def l_factor
