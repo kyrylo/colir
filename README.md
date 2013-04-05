@@ -169,6 +169,8 @@ Colir is a cross-platform library.
 Credits
 -------
 
+* The first contributor badge goes to [kachick][kachick]
+
 Licence
 -------
 
@@ -178,3 +180,4 @@ The project uses Zlib licence. See LICENCE file for more information.
 [ci-badge]: https://travis-ci.org/kyrylo/colir.png?branch=master "Build status"
 [ci-link]: https://travis-ci.org/kyrylo/colir/ "Build history"
 [w3]: http://www.w3schools.com/cssref/css_colornames.asp
+[kachick]: https://github.com/kachick
