@@ -289,10 +289,14 @@ class Colir
     self
   end
 
+  # @return [Colir] a new Colir, but darker than `self` by 1 shade. It does not
+  #   modify `self`
   def darker
     self.class.new(@hex, @transparency).darken
   end
 
+  # @return [Colir] a new Colir, but lighter than `self` by 1 shade. It does not
+  #   modify `self`
   def lighter
     self.class.new(@hex, @transparency).lighten
   end
