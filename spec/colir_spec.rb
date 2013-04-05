@@ -57,6 +57,10 @@ describe Colir do
         Colir.new(0x123456, 1.01)
       }.message.should =~ /out of allowed transparency values \(0-1\)/
     end
+
+    it "returns a Float value" do
+      Colir.new(0x123456).transparency.should.be kind_of(Float)
+    end
   end
 
   describe "#transparent!" do

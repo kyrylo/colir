@@ -183,7 +183,7 @@ class Colir
   SHADE_FACTOR = 5
 
   # The default transparency (opaque).
-  TRANSPARENCY = BigDecimal('0.0')
+  TRANSPARENCY = 0.0
 
   # The default shade assigned to any Colir.
   SHADE = 0
