@@ -121,7 +121,8 @@ class Colir
       red, green, blue = [red, green, blue].map { |b| b / BigDecimal('255.0') }
       min, max = [red, green, blue].minmax
       chroma = max - min
-      lightness = (min + max) * 0.5
+
+      lightness = (min + max) * BigDecimal('0.5')
 
       hue = 0
       saturation = BigDecimal('0.0')
